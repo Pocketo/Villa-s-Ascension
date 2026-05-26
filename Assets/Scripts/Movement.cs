@@ -1,3 +1,4 @@
+// Movement.cs - Agrega propiedades públicas para que CameraLook lea el estado
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,12 +12,17 @@ public class Movement : MonoBehaviour
     private CharacterController controller;
     private Vector2 moveInput;
     private float verticalVelocity;
-    private float currentSpeed;      // speed actually used for movement
+    private float currentSpeed;
     private bool isSprinting;
+
+    // CameraLook las lee para calcular el balanceo
+    public bool IsMoving   => moveInput.magnitude > 0.1f;
+    public bool IsSprinting => isSprinting;
+    public bool IsGrounded  => controller.isGrounded;
 
     void Start()
     {
-        controller = GetComponent<CharacterController>();
+        controller   = GetComponent<CharacterController>();
         currentSpeed = speed;
     }
 
@@ -40,12 +46,12 @@ public class Movement : MonoBehaviour
     {
         if (context.performed)
         {
-            isSprinting = true;
+            isSprinting  = true;
             currentSpeed = speed * sprintMultiplier;
         }
         else if (context.canceled)
         {
-            isSprinting = false;
+            isSprinting  = false;
             currentSpeed = speed;
         }
     }
