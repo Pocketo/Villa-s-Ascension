@@ -13,7 +13,17 @@ public class EnemyAim : MonoBehaviour
     [SerializeField] private float detectionRange = 20f;
     [SerializeField] private float aimSpeed = 5f;        // Qué tan rápido voltea hacia el jugador
 
+    [Header("Sonido")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip shootSound;
+
     private float nextFireTime = 0f;
+
+    void Start()
+    {
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
+    }
 
     void Update()
     {
@@ -41,6 +51,9 @@ public class EnemyAim : MonoBehaviour
     {
         nextFireTime = Time.time + fireRate;
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+
+        if (audioSource != null && shootSound != null)
+            audioSource.PlayOneShot(shootSound);
     }
 
     // Visualizar el rango de detección en el Editor
